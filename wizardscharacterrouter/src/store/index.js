@@ -47,6 +47,7 @@ export default new Vuex.Store({
         removeFavWizard({
             commit
         }, index) {
+            //quitar el fav, poner a false
             commit('removeFavWizard', index)
         },
 

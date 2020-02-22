@@ -1,0 +1,7 @@
+{
+    "chromeWebSecurity": false,
+    "env": {
+      "APP_BASE_URL": "http://localhost:8080"
+    },
+    "pluginsFile": "tests/e2e/plugins/index.js"
+  }

@@ -2,7 +2,7 @@
   <div class="wizards-list">
     <SearchInput @searchWizards="searchWizards"></SearchInput>
     <div class="wizards-list--container">
-      <div class="wizards-item" v-for="(wizard, index) in wizards" :key="index">
+      <div class="wizards-item" v-for="(wizard, index) in myWizards" :key="index">
         <WizardCard :wizard="wizard" :index="index"></WizardCard>
       </div>
     </div>
@@ -12,6 +12,7 @@
 <script>
 import WizardCard from "@/components/WizardCard";
 import SearchInput from "@/components/SearchInput";
+import { mapGetters } from 'vuex';
 
 export default {
   name: "WizardsList",
@@ -25,6 +26,11 @@ export default {
       wizards: [],
       search: ""
     };
+  },
+  computed: {
+    ...mapGetters ([
+      'myWizards'
+    ])
   },
   methods: {
     addFavWizard(wizard) {
@@ -44,22 +50,27 @@ export default {
   },
 
   beforeMount() {
-    fetch(`http://hp-api.herokuapp.com/api/characters`)
-      .then(response => response.json()) 
-      .then( wizards => this.$store.dispatch("addWizards", wizards))
-      .then((this.wizards = this.$store.state.wizards));
+    if (!this.$store.state.wizards.length) {
+      fetch(`http://hp-api.herokuapp.com/api/characters`)
+      .then(response => response.json())
+      .then(wizards => {
+        this.$store
+          .dispatch("addWizards", wizards)
+          .then(() => (this.wizards = this.$store.state.wizards));
+      });
+    }
+    
   }
 };
 </script>
 
 <style lang="scss" scoped>
-
 .wizards-list {
   margin-bottom: 100px;
 
   &--container {
     display: grid;
-    grid-template-columns: repeat( auto-fit, minmax(350px, 1fr) );
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     grid-template-rows: auto;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
