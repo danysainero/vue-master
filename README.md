@@ -1,3 +1,3 @@
 # vue-master
 
-Repos from VUE & VUEX master
+Repos & exercises from VUE & VUEX master
